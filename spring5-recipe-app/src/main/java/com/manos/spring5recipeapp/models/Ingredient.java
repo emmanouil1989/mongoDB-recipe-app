@@ -1,9 +1,12 @@
 package com.manos.spring5recipeapp.models;
 
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@EqualsAndHashCode(exclude={"recipe"})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

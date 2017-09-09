@@ -4,6 +4,7 @@ import com.manos.spring5recipeapp.Repositories.CategoryRepository;
 import com.manos.spring5recipeapp.Repositories.RecipeRepository;
 import com.manos.spring5recipeapp.Repositories.UnitOfMeasureRepository;
 import com.manos.spring5recipeapp.models.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class Boostrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
@@ -196,6 +198,7 @@ public class Boostrap implements ApplicationListener<ContextRefreshedEvent> {
         tacosRecipe.getCategories().add(mexicanCategory);
 
         recipes.add(tacosRecipe);
+//        log.info("recipes {}" ,recipes);
         return recipes;
     }
 }
