@@ -57,7 +57,7 @@ public class IndexControllerTest {
         Mockito.when(recipeService.getAllRecipes()).thenReturn(recipes);
         String allRecipes = indexController.getAllRecipes(model);
         assertEquals("index",allRecipes);
-       Mockito.verify(model,Mockito.times(1));
+
 
     }
 

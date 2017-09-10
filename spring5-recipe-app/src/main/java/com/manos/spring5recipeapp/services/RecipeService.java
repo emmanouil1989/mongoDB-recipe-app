@@ -8,5 +8,6 @@ import java.util.ArrayList;
 
 public interface RecipeService {
     public ArrayList<Recipe> getAllRecipes();
+    public Recipe findById(Long id);
 }
 
