@@ -1,0 +1,52 @@
+package com.manos.spring5recipeapp.converters;
+
+import com.manos.spring5recipeapp.commands.CategoryCommand;
+import com.manos.spring5recipeapp.commands.RecipeCommand;
+import com.manos.spring5recipeapp.models.Category;
+import com.manos.spring5recipeapp.models.Recipe;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.Nullable;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class RecipeCommandToRecipe implements Converter<RecipeCommand,Recipe> {
+
+    @Autowired
+    CategoryCommandToCategory categoryCommandToCategory;
+
+    @Autowired
+    IngredientCommandToIngredient ingredientCommandToIngredient;
+
+    @Autowired
+    NoteCommandToNote noteCommandToNote;
+
+    @Nullable
+    @Override
+    public Recipe convert(RecipeCommand recipeCommand) {
+
+        if(recipeCommand == null){
+            return null;
+        }
+        final Recipe recipe = new Recipe();
+        recipe.setDescription(recipeCommand.getDescription());
+        recipe.setId(recipeCommand.getId());
+        recipe.setCookTime(recipeCommand.getCookTime());
+        recipe.setDifficulty(recipeCommand.getDifficulty());
+        recipe.setDirections(recipeCommand.getDirections());
+        recipe.setPrepTime(recipeCommand.getPrepTime());
+        recipe.setServings(recipeCommand.getServings());
+        Set<CategoryCommand> recipeCommands =  recipeCommand.getCategories();
+        Set<Category> categories =  new HashSet<>();
+        for(CategoryCommand categoryCommand : recipeCommands){
+
+            categories.add(categoryCommandToCategory.convert(categoryCommand));
+        }
+        recipe.setCategories(categories);
+
+
+
+        return recipe;
+    }
+}
