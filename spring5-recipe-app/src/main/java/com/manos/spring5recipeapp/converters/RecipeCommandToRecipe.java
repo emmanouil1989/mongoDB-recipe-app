@@ -1,8 +1,12 @@
 package com.manos.spring5recipeapp.converters;
 
 import com.manos.spring5recipeapp.commands.CategoryCommand;
+import com.manos.spring5recipeapp.commands.IngredientCommand;
+import com.manos.spring5recipeapp.commands.NotesCommand;
 import com.manos.spring5recipeapp.commands.RecipeCommand;
 import com.manos.spring5recipeapp.models.Category;
+import com.manos.spring5recipeapp.models.Ingredient;
+import com.manos.spring5recipeapp.models.Notes;
 import com.manos.spring5recipeapp.models.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
@@ -39,14 +43,18 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand,Recipe> {
         recipe.setServings(recipeCommand.getServings());
         Set<CategoryCommand> recipeCommands =  recipeCommand.getCategories();
         Set<Category> categories =  new HashSet<>();
-        for(CategoryCommand categoryCommand : recipeCommands){
-
-            categories.add(categoryCommandToCategory.convert(categoryCommand));
+        if (recipeCommand.getCategories() != null && recipeCommand.getCategories().size() > 0){
+            recipeCommand.getCategories()
+                    .forEach( category -> recipe.getCategories().add(categoryCommandToCategory.convert(category)));
         }
-        recipe.setCategories(categories);
 
-
-
+        if (recipeCommand.getIngredients() != null && recipeCommand.getIngredients().size() > 0){
+            recipeCommand.getIngredients()
+                    .forEach(ingredient -> recipe.getIngredients().add(ingredientCommandToIngredient.convert(ingredient)));
+        }
+        recipe.setRecipeNotes(noteCommandToNote.convert(recipeCommand.getNotes()));
+        recipe.setSource(recipeCommand.getSource());
+        recipe.setUrl(recipeCommand.getUrl());
         return recipe;
     }
 }
