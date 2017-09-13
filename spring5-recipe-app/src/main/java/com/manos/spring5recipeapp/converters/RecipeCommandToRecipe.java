@@ -1,12 +1,8 @@
 package com.manos.spring5recipeapp.converters;
 
 import com.manos.spring5recipeapp.commands.CategoryCommand;
-import com.manos.spring5recipeapp.commands.IngredientCommand;
-import com.manos.spring5recipeapp.commands.NotesCommand;
 import com.manos.spring5recipeapp.commands.RecipeCommand;
 import com.manos.spring5recipeapp.models.Category;
-import com.manos.spring5recipeapp.models.Ingredient;
-import com.manos.spring5recipeapp.models.Notes;
 import com.manos.spring5recipeapp.models.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
