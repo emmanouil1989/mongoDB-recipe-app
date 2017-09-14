@@ -2,6 +2,7 @@ package com.manos.spring5recipeapp.converters;
 
         import com.manos.spring5recipeapp.commands.RecipeCommand;
         import com.manos.spring5recipeapp.models.Recipe;
+        import lombok.Synchronized;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.core.convert.converter.Converter;
         import org.springframework.lang.Nullable;
@@ -19,7 +20,7 @@ public class RecipeToRecipeCommand implements Converter<Recipe,RecipeCommand> {
     @Autowired
     IngredientToIngrentientCommand  ingredientToIngrentientCommand;
 
-
+    @Synchronized
     @Nullable
     @Override
     public RecipeCommand convert(Recipe recipe) {

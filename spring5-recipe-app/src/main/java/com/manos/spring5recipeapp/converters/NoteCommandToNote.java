@@ -2,12 +2,15 @@ package com.manos.spring5recipeapp.converters;
 
 import com.manos.spring5recipeapp.commands.NotesCommand;
 import com.manos.spring5recipeapp.models.Notes;
+import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NoteCommandToNote implements Converter<NotesCommand,Notes> {
+
+    @Synchronized
     @Nullable
     @Override
     public Notes convert(NotesCommand notesCommand) {

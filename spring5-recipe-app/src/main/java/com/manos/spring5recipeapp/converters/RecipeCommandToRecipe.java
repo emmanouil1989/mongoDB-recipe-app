@@ -4,6 +4,7 @@ import com.manos.spring5recipeapp.commands.CategoryCommand;
 import com.manos.spring5recipeapp.commands.RecipeCommand;
 import com.manos.spring5recipeapp.models.Category;
 import com.manos.spring5recipeapp.models.Recipe;
+import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -22,6 +23,7 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand,Recipe> {
     @Autowired
     NoteCommandToNote noteCommandToNote;
 
+    @Synchronized
     @Nullable
     @Override
     public Recipe convert(RecipeCommand recipeCommand) {
