@@ -2,11 +2,9 @@ package com.manos.spring5recipeapp.converters;
 
 import com.manos.spring5recipeapp.commands.*;
 import com.manos.spring5recipeapp.models.Difficulty;
-import com.manos.spring5recipeapp.models.Ingredient;
 import com.manos.spring5recipeapp.models.Recipe;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.math.BigDecimal;
 
@@ -81,7 +79,7 @@ public class RecipeCommandToRecipeTest {
         unitOfMeasureCommand.setId(ID);
         unitOfMeasureCommand.setDescription(DESCRIPTION);
 
-        ingredient.setUnitOfMeasure(unitOfMeasureCommand);
+        ingredient.setUom(unitOfMeasureCommand);
         recipeCommand.getIngredients().add(ingredient);
 
         NotesCommand notes = new NotesCommand();

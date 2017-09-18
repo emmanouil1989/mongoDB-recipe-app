@@ -8,10 +8,12 @@ import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class RecipeCommandToRecipe implements Converter<RecipeCommand,Recipe> {
 
     @Autowired
