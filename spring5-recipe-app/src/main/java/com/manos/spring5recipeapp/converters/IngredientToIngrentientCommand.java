@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class IngredientToIngrentientCommand implements Converter<Ingredient,IngredientCommand> {
 
     @Autowired
-    UomToUomCommand uomToUomCommand;
+      public  UomToUomCommand uomToUomCommand;
 
     @Synchronized
     @Nullable
@@ -23,6 +23,10 @@ public class IngredientToIngrentientCommand implements Converter<Ingredient,Ingr
         }
         final IngredientCommand ingredientCommand = new IngredientCommand();
         ingredientCommand.setAmount(ingredient.getAmount());
+        if(ingredient.getRecipe() != null){
+            ingredientCommand.setRecipeId(ingredient.getRecipe().getId());
+        }
+
         ingredientCommand.setDescription(ingredient.getDescription());
         ingredientCommand.setId(ingredient.getId());
         ingredientCommand.setUom(uomToUomCommand.convert(ingredient.getUom()));
