@@ -110,7 +110,7 @@ public class RecipeServiceImplTest {
 
         //when
         recipeService.deleteById(idToDelete);
-        
+
 
         //then
         verify(recipeRepository, times(1)).deleteById(anyLong());
