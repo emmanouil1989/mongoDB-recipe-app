@@ -19,6 +19,11 @@ public class UnitOfMeasureServiceImpl implements UnitOfMeasureService {
     @Autowired
     UomToUomCommand uomToUomCommand;
 
+    /**
+     * method to use stream and go through the iterator of uoms and split them and converter them to uomCommand and add them to a collection which then convert it
+     * to a set.
+     * @return
+     */
     @Override
     public Set<UnitOfMeasureCommand> findAll() {
         return StreamSupport.stream(unitOfMeasureRepository.findAll()
