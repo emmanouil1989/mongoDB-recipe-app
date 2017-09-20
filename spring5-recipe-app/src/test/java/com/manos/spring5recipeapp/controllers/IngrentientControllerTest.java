@@ -1,6 +1,8 @@
 package com.manos.spring5recipeapp.controllers;
 
+import com.manos.spring5recipeapp.commands.IngredientCommand;
 import com.manos.spring5recipeapp.commands.RecipeCommand;
+import com.manos.spring5recipeapp.services.IngrentientService;
 import com.manos.spring5recipeapp.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,9 @@ public class IngrentientControllerTest {
     @Mock
     RecipeService recipeService;
 
+    @Mock
+    IngrentientService ingrentientService;
+
     MockMvc mockMvc;
 
     @Before
@@ -31,6 +36,7 @@ public class IngrentientControllerTest {
         MockitoAnnotations.initMocks(this);
         ingrentientController = new IngrentientController();
         ingrentientController.recipeService=recipeService;
+        ingrentientController.ingrentientService=ingrentientService;
         mockMvc = MockMvcBuilders.standaloneSetup(ingrentientController).build();
     }
 
@@ -43,5 +49,19 @@ public class IngrentientControllerTest {
         .andExpect(status().is2xxSuccessful())
         .andExpect(model().attributeExists("recipe")).andExpect(view().name("recipe/ingredient/list"));
     }
+
+    @Test
+    public void showRecipeIngredient() throws Exception {
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setId(2L);
+        ingredientCommand.setDescription("manos");
+        ingredientCommand.setRecipeId(1l);
+        when(ingrentientService.findByRecipeIdAndIngrentientId(anyLong(),anyLong())).thenReturn(ingredientCommand);
+        mockMvc.perform(get("/recipe/1/ingredient/2/show"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(view().name("recipe/ingredient/show"))
+                .andExpect(model().attributeExists("ingredient"));
+    }
+
 
 }
