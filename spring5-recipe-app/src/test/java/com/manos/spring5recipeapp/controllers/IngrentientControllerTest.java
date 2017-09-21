@@ -2,8 +2,10 @@ package com.manos.spring5recipeapp.controllers;
 
 import com.manos.spring5recipeapp.commands.IngredientCommand;
 import com.manos.spring5recipeapp.commands.RecipeCommand;
+import com.manos.spring5recipeapp.commands.UnitOfMeasureCommand;
 import com.manos.spring5recipeapp.services.IngrentientService;
 import com.manos.spring5recipeapp.services.RecipeService;
+import com.manos.spring5recipeapp.services.UnitOfMeasureService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -11,15 +13,16 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.Assert.*;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class IngrentientControllerTest {
+
 
     IngrentientController ingrentientController;
 
@@ -31,12 +34,16 @@ public class IngrentientControllerTest {
 
     MockMvc mockMvc;
 
+    @Mock
+    UnitOfMeasureService uomService;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         ingrentientController = new IngrentientController();
         ingrentientController.recipeService=recipeService;
         ingrentientController.ingrentientService=ingrentientService;
+        ingrentientController.unitOfMeasureService=uomService;
         mockMvc = MockMvcBuilders.standaloneSetup(ingrentientController).build();
     }
 
@@ -46,8 +53,8 @@ public class IngrentientControllerTest {
         recipeCommand.setId(1L);
         when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
         mockMvc.perform(get("/recipe/1/ingredients"))
-        .andExpect(status().is2xxSuccessful())
-        .andExpect(model().attributeExists("recipe")).andExpect(view().name("recipe/ingredient/list"));
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().attributeExists("recipe")).andExpect(view().name("recipe/ingredient/list"));
     }
 
     @Test
@@ -63,5 +70,29 @@ public class IngrentientControllerTest {
                 .andExpect(model().attributeExists("ingredient"));
     }
 
+
+    @Test
+    public void showIngredient() throws Exception {
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setId(2L);
+        ingredientCommand.setDescription("manos");
+        ingredientCommand.setRecipeId(1l);
+        when(ingrentientService.findByRecipeIdAndIngrentientId(anyLong(),anyLong())).thenReturn(ingredientCommand);
+
+        Set<UnitOfMeasureCommand> set = new HashSet<>();
+        UnitOfMeasureCommand uom = new UnitOfMeasureCommand();
+        uom.setDescription("malaka");
+        uom.setId(1l);
+        set.add(uom);
+        when(uomService.findAll()).thenReturn(set);
+
+
+        mockMvc.perform(get("/recipe/1/ingredient/2/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/ingredientform"))
+                .andExpect(model().attributeExists("ingredient"))
+                .andExpect(model().attributeExists("uomList"));
+
+    }
 
 }

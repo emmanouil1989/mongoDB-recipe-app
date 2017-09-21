@@ -1,14 +1,19 @@
 package com.manos.spring5recipeapp.controllers;
 
 import com.manos.spring5recipeapp.commands.IngredientCommand;
+import com.manos.spring5recipeapp.commands.UnitOfMeasureCommand;
+import com.manos.spring5recipeapp.models.UnitOfMeasure;
 import com.manos.spring5recipeapp.services.IngrentientService;
 import com.manos.spring5recipeapp.services.RecipeService;
+import com.manos.spring5recipeapp.services.UnitOfMeasureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Set;
 
 @Controller
 public class IngrentientController {
@@ -18,6 +23,9 @@ public class IngrentientController {
 
     @Autowired
     IngrentientService ingrentientService;
+
+    @Autowired
+    UnitOfMeasureService unitOfMeasureService;
 
     @GetMapping
     @RequestMapping("/recipe/{id}/ingredients")
@@ -34,4 +42,14 @@ public class IngrentientController {
         return "recipe/ingredient/show";
     }
 
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
+    public String showIngredient(@PathVariable String recipeId, @PathVariable String ingredientId ,Model model){
+        IngredientCommand ingredientCommand = ingrentientService.findByRecipeIdAndIngrentientId(Long.valueOf(recipeId), Long.valueOf(ingredientId));
+
+        Set<UnitOfMeasureCommand> all = unitOfMeasureService.findAll();
+        model.addAttribute("ingredient",ingredientCommand);
+        model.addAttribute("uomList",all);
+        return "recipe/ingredient/ingredientform";
+    }
 }
