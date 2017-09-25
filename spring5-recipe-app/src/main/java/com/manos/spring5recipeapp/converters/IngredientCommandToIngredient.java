@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class IngredientCommandToIngredient implements Converter<IngredientCommand,Ingredient> {
 
     @Autowired
-    UomCommandToUom uomCommandToUom;
+    public UomCommandToUom uomCommandToUom;
 
     @Synchronized
     @Nullable

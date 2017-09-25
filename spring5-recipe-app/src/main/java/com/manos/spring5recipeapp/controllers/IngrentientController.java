@@ -9,9 +9,7 @@ import com.manos.spring5recipeapp.services.UnitOfMeasureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -52,4 +50,12 @@ public class IngrentientController {
         model.addAttribute("uomList",all);
         return "recipe/ingredient/ingredientform";
     }
+
+    @PostMapping
+    @RequestMapping("recipe/{recipeId}/ingredient")
+    public String updateIngredient(@ModelAttribute IngredientCommand command){
+        IngredientCommand ingredientCommand = ingrentientService.saveIngredient(command);
+        return "redirect:/recipe/" + ingredientCommand.getRecipeId()+ "/ingredient/" + ingredientCommand.getId() + "/show";
+    }
+
 }
