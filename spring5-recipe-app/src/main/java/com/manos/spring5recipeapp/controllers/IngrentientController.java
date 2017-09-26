@@ -1,7 +1,9 @@
 package com.manos.spring5recipeapp.controllers;
 
 import com.manos.spring5recipeapp.commands.IngredientCommand;
+import com.manos.spring5recipeapp.commands.RecipeCommand;
 import com.manos.spring5recipeapp.commands.UnitOfMeasureCommand;
+import com.manos.spring5recipeapp.models.Recipe;
 import com.manos.spring5recipeapp.models.UnitOfMeasure;
 import com.manos.spring5recipeapp.services.IngrentientService;
 import com.manos.spring5recipeapp.services.RecipeService;
@@ -56,6 +58,21 @@ public class IngrentientController {
     public String updateIngredient(@ModelAttribute IngredientCommand command){
         IngredientCommand ingredientCommand = ingrentientService.saveIngredient(command);
         return "redirect:/recipe/" + ingredientCommand.getRecipeId()+ "/ingredient/" + ingredientCommand.getId() + "/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    public String saveIngredient(@PathVariable String recipeId,Model model){
+        RecipeCommand recipe = recipeService.findCommandById(Long.valueOf(recipeId));
+
+        IngredientCommand command = new IngredientCommand();
+        command.setRecipeId(recipe.getId());
+        model.addAttribute("ingredient",command);
+        command.setUom(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList",unitOfMeasureService.findAll());
+
+        return "recipe/ingredient/ingredientform";
     }
 
 }
