@@ -102,6 +102,27 @@ public class IngrentientServiceImpl implements IngrentientService {
             return ingredientToIngrentientCommand.convert(
                     optional.get());
         }
+    }
+
+    @Override
+    public void deleteIngredient(Long recipeId, Long ingrentientId) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+
+        if(!recipeOptional.isPresent()){
+            log.error("recipe not found: "+ recipeId);
+        }
+
+        Recipe recipe = recipeOptional.get();
+
+        Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream().filter(ingredient -> ingredient.getId().equals(ingrentientId))
+                .findFirst();
+        if(ingredientOptional.isPresent()){
+            Ingredient ingredient = ingredientOptional.get();
+            ingredient.setRecipe(null);
+            recipe.getIngredients().remove(ingredient);
+        }
+
+        recipeRepository.save(recipe);
 
     }
 

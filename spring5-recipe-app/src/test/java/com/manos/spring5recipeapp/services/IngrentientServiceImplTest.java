@@ -24,6 +24,8 @@ import java.util.Set;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class IngrentientServiceImplTest {
@@ -119,6 +121,28 @@ public class IngrentientServiceImplTest {
         IngredientCommand command = ingrentientService.saveIngredient(ingredientCommand);
         assertNotNull(command);
 
+    }
+
+
+    @Test
+    public void deleteIngredient() throws Exception {
+
+        //given
+        Recipe recipe = new Recipe();
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(3L);
+        ingredient.setRecipe(recipe);
+        recipe.getIngredients().add(ingredient);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        //when
+        ingrentientService.deleteIngredient(1L, 3L);
+
+        //then
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).save(any(Recipe.class));
     }
 
 }
