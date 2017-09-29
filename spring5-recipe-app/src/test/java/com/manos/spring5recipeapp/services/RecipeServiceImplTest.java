@@ -4,6 +4,7 @@ import com.manos.spring5recipeapp.Repositories.RecipeRepository;
 import com.manos.spring5recipeapp.commands.RecipeCommand;
 import com.manos.spring5recipeapp.converters.RecipeCommandToRecipe;
 import com.manos.spring5recipeapp.converters.RecipeToRecipeCommand;
+import com.manos.spring5recipeapp.exceptions.NotFoundException;
 import com.manos.spring5recipeapp.models.Recipe;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 public class RecipeServiceImplTest {
+
 
     public static final String DESC = "desc";
     RecipeServiceImpl recipeService;
@@ -66,6 +68,12 @@ public class RecipeServiceImplTest {
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
         Recipe recipeServiceById = recipeService.findById(1L);
         assertNotNull(recipeServiceById);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void findByIdNotFound() throws Exception {
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.empty());
+        recipeService.findById(1L);
     }
 
     @Test
