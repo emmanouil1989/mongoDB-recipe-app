@@ -12,6 +12,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +41,7 @@ public class ImageControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         imageController = new ImageController();
-        mockMvc= MockMvcBuilders.standaloneSetup(imageController).build();
+        mockMvc= MockMvcBuilders.standaloneSetup(imageController).setControllerAdvice(new ControllerExceptionHandler()).build();
         imageController.imageService=imageService;
         imageController.recipeService=recipeService;
     }
@@ -66,6 +67,17 @@ public class ImageControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/recipe/1/show"));
         verify(imageService, times(1)).saveImageFile(anyLong(), any());
+    }
+
+
+    @Test
+    public void numberFormatException() throws Exception {
+
+        MockMultipartFile multipartFile =
+                new MockMultipartFile("imagefile", "testing.txt", "text/plain", "Spring Framework Guru".getBytes());
+        mockMvc.perform(multipart("/recipe/asdf/image").file(multipartFile))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 
 
