@@ -10,19 +10,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class RecipeControllerTest {
 
@@ -81,7 +76,7 @@ public class RecipeControllerTest {
                 .param("directions","asdf")
 
         ).andExpect(status().is3xxRedirection())
-         .andExpect(view().name("redirect:/recipe/2/show/"));
+                .andExpect(view().name("redirect:/recipe/2/show/"));
 
     }
 
@@ -94,16 +89,15 @@ public class RecipeControllerTest {
         mockMvc.perform(get("/recipe/1/update"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"))
-        .andExpect(view().name("recipe/recipeform") );
-
+                .andExpect(view().name("recipe/recipeform") );
     }
 
     @Test
     public void newRecipe()throws Exception {
         mockMvc.perform(get("/recipe/new"))
-        .andExpect(status().isOk())
-        .andExpect(model().attributeExists("recipe"))
-        .andExpect(view().name("recipe/recipeform"));
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("recipe"))
+                .andExpect(view().name("recipe/recipeform"));
     }
 
     @Test
