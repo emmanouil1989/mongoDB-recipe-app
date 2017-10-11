@@ -44,9 +44,7 @@ public class RecipeController {
             return RECIPE_RECIPEFORM;
         }
 
-
         RecipeCommand command = recipeService.save(recipeCommand);
-
         return "redirect:/recipe/" + command.getId()+ "/show/";
 
     }

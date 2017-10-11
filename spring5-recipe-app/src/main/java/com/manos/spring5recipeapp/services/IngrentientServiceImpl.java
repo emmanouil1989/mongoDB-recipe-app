@@ -86,6 +86,7 @@ public class IngrentientServiceImpl implements IngrentientService {
 
             Recipe savedRecipe = recipeRepository.save(recipe);
 
+
             Optional<Ingredient> optional = savedRecipe.getIngredients().stream()
                     .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
                     .findFirst();
