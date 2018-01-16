@@ -3,7 +3,6 @@ package com.manos.spring5recipeapp.controllers;
 import com.manos.spring5recipeapp.commands.RecipeCommand;
 import com.manos.spring5recipeapp.exceptions.NotFoundException;
 import com.manos.spring5recipeapp.services.RecipeService;
-import com.sun.tracing.dtrace.ProviderAttributes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.naming.Binding;
 import javax.validation.Valid;
 
 @Controller
